@@ -471,7 +471,7 @@ body {
 }
 
 .runner {
-  position: relative;
+  position: absolute;
   width: 80px;
   height: 120px;
 }
@@ -566,6 +566,71 @@ body {
   border-top: 8px solid var(--white);
 }
 
+.central-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+
+.central-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.central-right {
+  flex: 2;
+  min-width: 250px;
+  text-align: left;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  background-color: #ffb347;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  background-image: url('images/avatar.png'); /* use your own emoji or picture */
+  background-size: cover;
+  background-position: center;
+}
+
+.speech-bubble {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  max-width: 200px;
+  text-align: center;
+}
+
+.station-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.station-subtitle {
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+/* ✅ RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .central-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+}
+
 .station-content {
   max-width: 1200px;
   width: 100%;
@@ -577,6 +642,7 @@ body {
   z-index: 3; /* Ensure text is above runner */
   text-align: left; /* Align content to the left */
 }
+
 
 .station-sign {
   text-align: left; /* Align text to the left */
@@ -884,6 +950,8 @@ body {
 .about-content {
   max-width: 1200px;
   width: 100%;
+   overflow-y: auto;
+
 }
 
 .about-card {
@@ -2170,13 +2238,13 @@ html, body {
 
 .game-section {
   width: 100vw;
-  min-height: calc(100vh - 80px);
+  min-height: 100vh;                 /* Allow full vertical room */
   flex-shrink: 0;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
   scroll-behavior: smooth;
-  padding: 100px 0 40px 0; /* top padding for nav, bottom padding for visibility */
+  padding: 100px 0 80px 0;          
   box-sizing: border-box;
 }
 
