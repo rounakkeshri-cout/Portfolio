@@ -1,0 +1,2184 @@
+/* Import Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@400;600;700;800&display=swap");
+
+/* CSS Variables */
+:root {
+  /* Subway Surfers Color Palette */
+  --primary-orange: #ff6b35;
+  --secondary-blue: #4ecdc4;
+  --accent-yellow: #ffd23f;
+  --accent-purple: #845ec2;
+  --accent-pink: #ff8a80;
+  --dark-blue: #2c3e50;
+  --light-gray: #ecf0f1;
+  --white: #ffffff;
+  --black: #2c2c2c;
+
+  /* Game UI Colors */
+  --coin-gold: #ffd700;
+  --power-up-blue: #00bfff;
+  --danger-red: #ff4757;
+  --success-green: #2ed573;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--primary-orange), var(--accent-yellow));
+  --gradient-secondary: linear-gradient(135deg, var(--secondary-blue), var(--accent-purple));
+  --gradient-danger: linear-gradient(135deg, var(--danger-red), var(--accent-pink));
+  --gradient-success: linear-gradient(135deg, var(--success-green), var(--secondary-blue));
+
+  /* Shadows */
+  --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.15);
+  --shadow-heavy: 0 15px 35px rgba(0, 0, 0, 0.2);
+  --shadow-neon: 0 0 20px rgba(255, 107, 53, 0.5);
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+  line-height: 1.6;
+  color: var(--black);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow-x: hidden; /* Hide scrollbars for the body */
+  position: relative;
+}
+
+/* Loading Screen */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  transition: opacity 0.5s ease;
+}
+
+.loading-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-runner {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 2rem;
+}
+
+.runner-loading {
+  width: 100%;
+  height: 100%;
+  background: var(--white);
+  border-radius: 50%;
+  position: relative;
+  animation: bounce 1s infinite;
+}
+
+.runner-loading::before {
+  content: "🏃‍♂️";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+}
+
+.loading-text h2 {
+  color: var(--white);
+  font-family: "Fredoka One", cursive;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.loading-bar {
+  width: 300px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.loading-progress {
+  height: 100%;
+  background: var(--white);
+  border-radius: 4px;
+  animation: loading 3s ease-in-out;
+}
+
+/* Game UI Overlay (Combined Top Bar) */
+.game-ui {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px; /* Adjusted height to fit all elements */
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 3px solid var(--primary-orange);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  pointer-events: none; /* Allow clicks to pass through unless on specific elements */
+}
+
+.game-ui > * {
+  pointer-events: all; /* Re-enable pointer events for children */
+}
+
+.score-board {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.score-item {
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-medium);
+}
+
+.score-item i {
+  color: var(--coin-gold);
+}
+
+.resume-btn {
+  background: var(--gradient-success);
+  color: var(--white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-medium);
+  margin-left: 1.5rem; /* Space after score board */
+  flex-shrink: 0;
+}
+
+.resume-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-heavy);
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  flex-grow: 1; /* Allows this group to take available space */
+  justify-content: center; /* Center nav links within this group */
+  margin: 0 2rem; /* Add horizontal margin to push away from buttons */
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--white);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  background: var(--gradient-primary);
+  transform: translateY(-2px);
+}
+
+.nav-link::after {
+  content: attr(data-station);
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--black);
+  color: var(--white);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover::after {
+  opacity: 1;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0; /* Prevent logo from shrinking */
+  margin-left: auto; /* Pushes the logo to the far right */
+}
+
+.logo-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+.logo-text {
+  font-family: "Fredoka One", cursive;
+  font-size: 1.5rem;
+  color: var(--white);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-toggle {
+  display: none; /* Hidden by default on desktop */
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+  margin-left: 1rem; /* Space after logo */
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Navigation (Secondary Bar) */
+/* .game-nav {
+  position: fixed;
+  top: 60px; /* Position directly below the game-ui bar */
+/*  width: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(20px);
+  z-index: 999; /* Below game-ui */
+/*  transition: all 0.3s ease;
+  border-bottom: 3px solid var(--primary-orange);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px; /* Match game-ui padding */
+/*  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px; /* Keep original height */
+/*  gap: 1rem;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  /* Ensure logo is not hidden by score-board */
+/*  margin-left: 100px; /* Push logo further right to clear score-board */
+/*}
+
+.logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-orange);
+}
+
+.logo-text {
+  font-family: "Fredoka One", cursive;
+  font-size: 1.5rem;
+  color: var(--white);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin-left: auto; /* Pushes the menu to the right */
+/*}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--white);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  background: var(--gradient-primary);
+  transform: translateY(-2px);
+}
+
+.nav-link::after {
+  content: attr(data-station);
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--black);
+  color: var(--white);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover::after {
+  opacity: 1;
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+*/
+/* Game World Container - For Horizontal Scrolling */
+.game-world-container {
+  display: flex;
+  width: fit-content; /* Allows content to expand horizontally */
+  transition: transform 0.8s ease-in-out; /* Smooth transition for horizontal movement */
+  height: 100vh; /* Take full viewport height */
+  overflow: hidden;
+  /* Add top padding to account for fixed headers */
+  padding-top: 80px; /* Height of combined game-ui bar */
+}
+
+/* Game Sections */
+.game-section {
+  min-width: 100vw; /* Changed from calc(100vw - 40px) */
+  min-height: calc(100vh - 80px); /* Adjust height for fixed header */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px; /* This padding will now be *inside* the 100vw width */
+  overflow-y: auto;
+  overflow-x: hidden; /* Hide internal scrollbars */
+  flex-shrink: 0; /* Prevent sections from shrinking */
+}
+
+.subway-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* Hero Section - Central Station */
+.hero-station {
+  background: var(--gradient-primary);
+  color: var(--white);
+  /* Adjust padding to ensure content fits and is not cut off */
+  padding: 20px 5% 20px 5%; /* Top/bottom 20px, left/right 5% */
+  justify-content: center; /* Center content vertically within the section */
+}
+
+.train-tracks {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: repeating-linear-gradient(90deg, #333 0px, #333 10px, transparent 10px, transparent 20px);
+  opacity: 0.3;
+}
+
+.moving-train {
+  position: absolute;
+  bottom: 20px;
+  width: 200px;
+  height: 60px;
+  background: var(--dark-blue);
+  border-radius: 10px;
+  animation: moveTrain 15s linear infinite;
+}
+
+.moving-train::before {
+  content: "🚇";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+}
+
+.runner-container {
+  position: absolute;
+  left: 5%; /* Position runner further left */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.runner {
+  position: relative;
+  width: 80px;
+  height: 120px;
+}
+
+.runner-body {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  animation: runAnimation 0.5s infinite;
+}
+
+.runner-head {
+  width: 30px;
+  height: 30px;
+  background: #fdbcb4;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 2px solid var(--black);
+}
+
+.runner-head::before {
+  content: "😊";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+}
+
+.runner-torso {
+  width: 40px;
+  height: 50px;
+  background: var(--primary-orange);
+  position: absolute;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  border: 2px solid var(--black);
+}
+
+.runner-legs {
+  width: 20px;
+  height: 40px;
+  background: var(--dark-blue);
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 0 0 10px 10px;
+  border: 2px solid var(--black);
+}
+
+.speech-bubble {
+  position: absolute;
+  top: -60px;
+  left: 100px;
+  background: var(--white);
+  color: var(--black);
+  padding: 1rem;
+  border-radius: 15px;
+  border: 3px solid var(--black);
+  max-width: 250px;
+  font-weight: 600;
+  animation: bubbleFloat 2s ease-in-out infinite;
+}
+
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 20px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--black);
+}
+
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -7px;
+  left: 22px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid var(--white);
+}
+
+.station-content {
+  max-width: 1200px;
+  width: 100%;
+  display: grid;
+  /* Adjust grid columns to give more space to the right for text */
+  grid-template-columns: 0.2fr 1.8fr; /* Smaller left column for runner, larger right for text */
+  gap: 6rem;
+  align-items: center;
+  z-index: 3; /* Ensure text is above runner */
+  text-align: left; /* Align content to the left */
+}
+
+.station-sign {
+  text-align: left; /* Align text to the left */
+  margin-bottom: 2rem;
+}
+
+.station-sign h1 {
+  font-family: "Fredoka One", cursive;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-shadow: 3px 3px 0px var(--black);
+  animation: neonGlow 2s ease-in-out infinite alternate;
+}
+
+.hero-info h2 {
+  font-family: "Fredoka One", cursive;
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 3px 3px 0px var(--black);
+}
+
+.glitch-text {
+  position: relative;
+  animation: glitch 2s infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  animation: glitch-1 0.5s infinite;
+  color: var(--accent-pink);
+  z-index: -1;
+}
+
+.glitch-text::after {
+  animation: glitch-2 0.5s infinite;
+  color: var(--secondary-blue);
+  z-index: -2;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
+.power-ups {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.power-up {
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 3px solid var(--white);
+  position: relative;
+}
+
+.power-up:hover {
+  transform: scale(1.2) rotate(360deg);
+  box-shadow: 0 0 20px var(--secondary-blue);
+}
+
+.power-up::after {
+  content: attr(data-power);
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--black);
+  color: var(--white);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.power-up:hover::after {
+  opacity: 1;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.game-btn {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.game-btn:hover::before {
+  left: 100%;
+}
+
+.game-btn.primary {
+  background: var(--gradient-success);
+  color: var(--white);
+  border: 3px solid var(--white);
+}
+
+.game-btn.secondary {
+  background: transparent;
+  color: var(--white);
+  border: 3px solid var(--white);
+}
+
+.game-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-heavy);
+}
+
+.floating-coins {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.coin {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: var(--coin-gold);
+  border-radius: 50%;
+  border: 3px solid #ffed4e;
+  animation: floatCoin 3s ease-in-out infinite;
+}
+
+.coin::before {
+  content: "💰";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+}
+
+.coin:nth-child(1) {
+  top: 20%;
+  left: 20%;
+  animation-delay: 0s;
+}
+.coin:nth-child(2) {
+  top: 40%;
+  left: 80%;
+  animation-delay: 1s;
+}
+.coin:nth-child(3) {
+  top: 60%;
+  left: 30%;
+  animation-delay: 2s;
+}
+.coin:nth-child(4) {
+  top: 80%;
+  left: 70%;
+  animation-delay: 0.5s;
+}
+.coin:nth-child(5) {
+  top: 30%;
+  left: 50%;
+  animation-delay: 1.5s;
+}
+
+/* Station Headers */
+.station-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.station-title {
+  font-family: "Fredoka One", cursive;
+  font-size: 3rem;
+  color: var(--white);
+  text-shadow: 3px 3px 0px var(--black);
+  margin-bottom: 1rem;
+  animation: neonGlow 2s ease-in-out infinite alternate;
+}
+
+.runner-mini {
+  position: absolute;
+  top: -20px;
+  right: 20px;
+  width: 40px;
+  height: 60px;
+  animation: runAnimation 0.5s infinite;
+}
+
+.runner-mini::before {
+  content: "🏃‍♂️";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+}
+
+.speech-bubble-mini {
+  position: absolute;
+  top: -40px;
+  left: 50px;
+  background: var(--white);
+  color: var(--black);
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 2px solid var(--black);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  animation: bubbleFloat 2s ease-in-out infinite;
+}
+
+.speech-bubble-mini::before {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 10px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid var(--black);
+}
+
+.speech-bubble-mini::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 11px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--white);
+}
+
+/* About Section */
+.about-station {
+  background: var(--gradient-secondary);
+  color: var(--white);
+}
+
+.platform-tiles {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: repeating-linear-gradient(0deg, #34495e 0px, #34495e 25px, #2c3e50 25px, #2c3e50 50px);
+}
+
+.about-content {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.about-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.about-card .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.about-card .card-header i {
+  font-size: 2rem;
+  color: var(--accent-yellow);
+}
+
+.about-card h3 {
+  font-family: "Fredoka One", cursive;
+  font-size: 1.8rem;
+}
+
+.about-card p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.stats-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 1.5rem;
+  color: var(--white);
+}
+
+.stat-number {
+  font-family: "Fredoka One", cursive;
+  font-size: 2.5rem;
+  color: var(--accent-yellow);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 4px;
+  width: 0;
+  animation: fillProgress 2s ease-in-out forwards;
+}
+
+.education-timeline {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.education-timeline::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent-yellow);
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.timeline-item {
+  display: flex;
+  margin-bottom: 3rem;
+  align-items: center;
+  position: relative;
+}
+
+.timeline-item:nth-child(odd) {
+  flex-direction: row;
+}
+
+.timeline-item:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.timeline-year {
+  flex: 0 0 120px;
+  background: var(--gradient-primary);
+  color: var(--white);
+  padding: 1rem;
+  border-radius: 15px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 0 2rem;
+  border: 3px solid var(--white);
+}
+
+.timeline-content {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.timeline-content h4 {
+  font-family: "Fredoka One", cursive;
+  font-size: 1.3rem;
+  color: var(--accent-yellow);
+  margin-bottom: 0.5rem;
+}
+
+.timeline-content p {
+  margin-bottom: 0.5rem;
+}
+
+.grade {
+  color: var(--accent-pink);
+  font-weight: 700;
+}
+
+/* Skills Section */
+.skills-station {
+  background: var(--gradient-danger);
+  color: var(--white);
+}
+
+.electric-wires {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent 0px,
+    transparent 10px,
+    rgba(255, 255, 255, 0.1) 10px,
+    rgba(255, 255, 255, 0.1) 12px
+  );
+}
+
+.skills-game {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.skill-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.skill-category {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.skill-category:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.category-header i {
+  font-size: 2rem;
+  color: var(--accent-yellow);
+}
+
+.category-header h3 {
+  font-family: "Fredoka One", cursive;
+  font-size: 1.5rem;
+}
+
+.skill-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.skill-item {
+  position: relative;
+}
+
+.skill-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.skill-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.skill-level {
+  color: var(--accent-yellow);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.skill-bar {
+  height: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.skill-progress {
+  height: 100%;
+  background: var(--gradient-success);
+  border-radius: 6px;
+  width: 0;
+  transition: width 2s ease-in-out;
+  position: relative;
+}
+
+.skill-progress::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+.skill-coins {
+  position: absolute;
+  top: -5px;
+  right: 10px;
+  display: flex;
+  gap: 5px;
+}
+
+.mini-coin {
+  width: 20px;
+  height: 20px;
+  background: var(--coin-gold);
+  border-radius: 50%;
+  border: 2px solid #ffed4e;
+  animation: coinSpin 2s linear infinite;
+}
+
+.mini-coin::before {
+  content: "💰";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+}
+
+.platforms-arcade {
+  text-align: center;
+}
+
+.platforms-arcade h3 {
+  font-family: "Fredoka One", cursive;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--accent-yellow);
+}
+
+.arcade-machines {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.arcade-machine {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.arcade-machine:hover {
+  transform: scale(1.05);
+}
+
+.machine-screen {
+  background: var(--black);
+  border: 4px solid var(--white);
+  border-radius: 15px 15px 0 0;
+  padding: 2rem 1rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.machine-screen::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  animation: screenGlow 3s ease-in-out infinite;
+}
+
+.machine-screen i {
+  font-size: 2rem;
+  color: var(--accent-yellow);
+  margin-bottom: 1rem;
+}
+
+.machine-screen h4 {
+  color: var(--white);
+  font-family: "Fredoka One", cursive;
+  margin-bottom: 0.5rem;
+}
+
+.machine-screen .score {
+  color: var(--accent-pink);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.machine-screen .high-score {
+  color: var(--secondary-blue);
+  font-size: 0.9rem;
+}
+
+.machine-base {
+  height: 30px;
+  background: var(--dark-blue);
+  border: 4px solid var(--white);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Projects Section */
+.projects-station {
+  background: var(--gradient-secondary);
+  color: var(--white);
+}
+
+.city-skyline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(to top, var(--dark-blue) 0%, transparent 100%);
+}
+
+.city-skyline::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--black) 0px,
+    var(--black) 20px,
+    var(--dark-blue) 20px,
+    var(--dark-blue) 40px
+  );
+}
+
+.projects-game {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.project-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.project-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.project-card:hover {
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+.project-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.project-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 2px solid white;
+  border-radius: 15px 15px 0 0;
+}
+
+
+.project-card:hover .project-image img {
+  transform: scale(1.1);
+}
+
+.project-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover .project-overlay {
+  opacity: 1;
+}
+
+.project-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.project-btn {
+  background: var(--gradient-primary);
+  color: var(--white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.project-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.project-content {
+  padding: 2rem;
+}
+
+.project-content h3 {
+  font-family: "Fredoka One", cursive;
+  font-size: 1.5rem;
+  color: var(--accent-yellow);
+  margin-bottom: 1rem;
+}
+
+.project-content p {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tech-badge {
+  background: var(--gradient-success);
+  color: var(--white);
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.project-score {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-yellow);
+  font-weight: 700;
+}
+
+/* Contact Section */
+.contact-station {
+  background: var(--gradient-primary);
+  color: var(--white);
+}
+
+.neon-lights {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 50px,
+    rgba(255, 107, 53, 0.1) 50px,
+    rgba(255, 107, 53, 0.1) 52px
+  );
+  animation: neonFlicker 3s ease-in-out infinite;
+}
+
+.contact-game {
+  max-width: 1200px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateX(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.info-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--white);
+}
+
+.info-content h4 {
+  font-family: "Fredoka One", cursive;
+  font-size: 1.2rem;
+  color: var(--accent-yellow);
+  margin-bottom: 0.5rem;
+}
+
+.info-content p {
+  font-weight: 600;
+}
+
+.social-arcade {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.social-arcade h4 {
+  font-family: "Fredoka One", cursive;
+  font-size: 1.3rem;
+  color: var(--accent-yellow);
+  margin-bottom: 1.5rem;
+}
+
+.social-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.social-btn {
+  background: var(--gradient-secondary);
+  color: var(--white);
+  text-decoration: none;
+  padding: 1rem;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.social-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.social-btn.linkedin {
+  background: linear-gradient(135deg, #0077b5, #00a0dc);
+}
+
+.social-btn.github {
+  background: linear-gradient(135deg, #333, #666);
+}
+
+.social-btn.leetcode {
+  background: linear-gradient(135deg, #ffa116, #f89c00);
+}
+
+.social-btn.gfg {
+  background: linear-gradient(135deg, #0f9d58, #16a085);
+}
+
+.contact-form-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.contact-form-container h3 {
+  font-family: "Fredoka One", cursive;
+  font-size: 2rem;
+  color: var(--accent-yellow);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  position: relative;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  color: var(--white);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent-yellow);
+  box-shadow: 0 0 20px rgba(255, 210, 63, 0.3);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.form-group label {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0 0.5rem;
+  border-radius: 4px;
+}
+
+.form-group input:focus + label,
+.form-group textarea:focus + label,
+.form-group input:not(:placeholder-shown) + label,
+.form-group textarea:not(:placeholder-shown) + label {
+  top: -0.5rem;
+  left: 1rem;
+  font-size: 0.8rem;
+  color: var(--accent-yellow);
+}
+
+.input-highlight {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent-yellow);
+  transition: width 0.3s ease;
+}
+
+.form-group input:focus ~ .input-highlight,
+.form-group textarea:focus ~ .input-highlight {
+  width: 100%;
+}
+
+/* Horizontal Navigation Arrows */
+.nav-arrows {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 1000;
+}
+
+.nav-arrow {
+  background: var(--gradient-primary);
+  color: var(--white);
+  border: 3px solid var(--white);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-medium);
+  transition: all 0.3s ease;
+}
+
+.nav-arrow:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-heavy);
+}
+
+.nav-arrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: scale(1);
+  box-shadow: none;
+}
+
+/* Footer */
+.game-footer {
+  background: var(--black);
+  color: var(--white);
+  padding: 3rem 0;
+  text-align: center;
+  position: relative; /* Ensure it's positioned correctly */
+  z-index: 1; /* Ensure it's above the game world if needed */
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.final-score {
+  margin-bottom: 2rem;
+}
+
+.final-score h3 {
+  font-family: "Fredoka One", cursive;
+  font-size: 2rem;
+  color: var(--accent-yellow);
+  margin-bottom: 1rem;
+}
+
+.final-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.final-stats span {
+  background: var(--gradient-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-weight: 700;
+}
+
+/* Notification System */
+#notification-container {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notification {
+  background: var(--gradient-success);
+  color: var(--white);
+  padding: 1rem 1.5rem;
+  border-radius: 15px;
+  border: 2px solid var(--white);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  box-shadow: var(--shadow-heavy);
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification.error {
+  background: var(--gradient-danger);
+}
+
+.notification.success {
+  background: var(--gradient-success);
+}
+
+/* Animations */
+@keyframes loading {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes moveTrain {
+  0% {
+    left: -200px;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes runAnimation {
+  0%,
+  100% {
+    transform: translateY(0) scaleX(1);
+  }
+  50% {
+    transform: translateY(-5px) scaleX(0.95);
+  }
+}
+
+@keyframes bubbleFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes neonGlow {
+  0% {
+    text-shadow: 3px 3px 0px var(--black), 0 0 10px var(--accent-yellow);
+  }
+  100% {
+    text-shadow: 3px 3px 0px var(--black), 0 0 20px var(--accent-yellow), 0 0 30px var(--accent-yellow);
+  }
+}
+
+@keyframes glitch {
+  0%,
+  100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+}
+
+@keyframes glitch-1 {
+  0%,
+  100% {
+    transform: translate(0);
+  }
+  10% {
+    transform: translate(-2px, -2px);
+  }
+  20% {
+    transform: translate(2px, 2px);
+  }
+  30% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(2px, -2px);
+  }
+}
+
+@keyframes glitch-2 {
+  0%,
+  100% {
+    transform: translate(0);
+  }
+  5% {
+    transform: translate(2px, 2px);
+  }
+  15% {
+    transform: translate(-2px, -2px);
+  }
+  25% {
+    transform: translate(2px, -2px);
+  }
+  35% {
+    transform: translate(-2px, 2px);
+  }
+}
+
+@keyframes floatCoin {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
+@keyframes fillProgress {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes coinSpin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes screenGlow {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes neonFlicker {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* AOS Animations */
+/* AOS will now apply to elements as they enter the viewport horizontally */
+[data-aos] {
+  opacity: 0;
+  transition: all 0.8s ease;
+}
+
+[data-aos].aos-animate {
+  opacity: 1;
+}
+
+[data-aos="fade-up"] {
+  transform: translateY(50px);
+}
+
+[data-aos="fade-up"].aos-animate {
+  transform: translateY(0);
+}
+
+[data-aos="slide-right"] {
+  transform: translateX(-50px);
+}
+
+[data-aos="slide-right"].aos-animate {
+  transform: translateX(0);
+}
+
+[data-aos="slide-left"] {
+  transform: translateX(50px);
+}
+
+[data-aos="slide-left"].aos-animate {
+  transform: translateX(0);
+}
+
+[data-aos="zoom-in"] {
+  transform: scale(0.8);
+}
+
+[data-aos="zoom-in"].aos-animate {
+  transform: scale(1);
+}
+
+[data-aos="flip-left"] {
+  transform: perspective(400px) rotateY(-90deg);
+}
+
+[data-aos="flip-left"].aos-animate {
+  transform: perspective(400px) rotateY(0deg);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .nav-menu {
+    gap: 1rem; /* Reduce gap for smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .game-ui {
+    flex-wrap: wrap; /* Allow items to wrap */
+    height: auto; /* Allow height to adjust */
+    padding: 10px 20px; /* Adjust padding */
+    justify-content: space-between; /* Distribute items */
+  }
+
+  .score-board {
+    order: 1; /* Top-left */
+    flex-basis: auto;
+  }
+
+  .resume-btn {
+    order: 2; /* Next to score-board */
+    margin-left: 1rem; /* Adjust margin for mobile */
+  }
+
+  .nav-logo {
+    order: 3; /* Top-right */
+    margin-left: auto; /* Push to far right */
+  }
+
+  .nav-toggle {
+    display: flex; /* Show mobile toggle */
+    order: 4; /* Next to logo */
+    margin-left: 1rem; /* Space after logo */
+  }
+
+  .nav-menu {
+    display: none; /* Hide nav menu on mobile by default */
+    position: fixed;
+    left: -100%;
+    top: 100px; /* Adjust based on new wrapped header height */
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+    padding: 2rem 0;
+    border-top: 3px solid var(--primary-orange);
+    z-index: 1000; /* Ensure it's above game-world-container */
+    margin: 0; /* Remove horizontal margin on mobile */
+  }
+
+  .nav-menu.active {
+    left: 0;
+    display: flex; /* Show when active */
+  }
+
+  .game-world-container {
+    padding-top: 100px; /* Adjust padding for new wrapped header height */
+  }
+}
+
+@media (max-width: 480px) {
+  .game-ui {
+    padding: 5px 10px;
+  }
+  .score-board {
+    gap: 0.5rem;
+  }
+  .score-item {
+    padding: 0.3rem 0.8rem;
+  }
+  .resume-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+  }
+  .nav-logo .logo-text {
+    font-size: 1.2rem;
+  }
+  .nav-logo .logo-img {
+    width: 30px;
+    height: 30px;
+  }
+  .nav-menu {
+    top: 90px; /* Further adjust for smaller screens */
+  }
+  .game-world-container {
+    padding-top: 90px; /* Further adjust for smaller screens */
+  }
+}
+
+/* Print Styles */
+@media print {
+  .game-ui,
+  .nav-toggle,
+  .floating-coins,
+  .moving-train,
+  .nav-arrows {
+    /* Hide nav arrows in print */
+    display: none;
+  }
+
+  .game-section {
+    padding: 2rem 1rem;
+    min-width: auto; /* Allow sections to shrink for print */
+    height: auto; /* Allow sections to expand vertically for print */
+  }
+
+  .station-title {
+    color: var(--black) !important;
+  }
+
+  .game-world-container {
+    display: block; /* Stack sections vertically for print */
+    transform: none !important; /* Remove horizontal transform */
+    height: auto;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  :root {
+    --shadow-light: rgba(0, 0, 0, 0.5);
+    --shadow-medium: rgba(0, 0, 0, 0.7);
+    --shadow-heavy: rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* === FIX FOR SECTION SLIDE NOT COVERING FULL SCREEN === */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+#game-world-container {
+  display: flex;
+  width: 500vw; /* or use calc(#sections * 100vw) */
+  height: 100vh;
+  transition: transform 0.8s ease-in-out;
+}
+
+.game-section {
+  width: 100vw;
+  height: calc(100vh - 80px); /* Account for fixed nav */
+  flex-shrink: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  scroll-behavior: smooth;
+  padding-top: 100px; /* 👈 Pushes content down so it's not hidden */
+}
+
+.about-content,
+.skills-game,
+.contact-game {
+  height: 100%;
+  overflow-y: auto;
+}
+.game-section::-webkit-scrollbar {
+  display: none;
+}

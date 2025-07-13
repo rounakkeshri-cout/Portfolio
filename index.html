@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rounak Keshri - Subway Surfer Developer</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loading-screen">
+      <div class="loading-runner">
+          <div class="runner-loading"></div>
+      </div>
+      <div class="loading-text">
+          <h2>Loading Rounak's World...</h2>
+          <div class="loading-bar">
+              <div class="loading-progress"></div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Game UI Overlay (Combined Top Bar) -->
+  <div class="game-ui">
+      <div class="score-board">
+          <div class="score-item">
+              <i class="fas fa-star"></i>
+              <span id="score">0</span>
+          </div>
+          <div class="score-item">
+              <i class="fas fa-coins"></i>
+              <span id="coins">0</span>
+          </div>
+      </div>
+
+      <!-- Resume Download Button -->
+      <a href="resume.pdf" download class="resume-btn">
+  <i class="fas fa-download"></i>
+  <span>Download Resume</span>
+</a>
+
+      
+
+      <ul class="nav-menu" id="nav-menu">
+          <li class="nav-item"><a href="#home" class="nav-link" data-station="Central Station"><i class="fas fa-home"></i><span>Home</span></a></li>
+          <li class="nav-item"><a href="#about" class="nav-link" data-station="About Plaza"><i class="fas fa-user"></i><span>About</span></a></li>
+          <li class="nav-item"><a href="#skills" class="nav-link" data-station="Skills Junction"><i class="fas fa-code"></i><span>Skills</span></a></li>
+          <li class="nav-item"><a href="#projects" class="nav-link" data-station="Project Terminal"><i class="fas fa-rocket"></i><span>Projects</span></a></li>
+          <li class="nav-item"><a href="#contact" class="nav-link" data-station="Contact Hub"><i class="fas fa-envelope"></i><span>Contact</span></a></li>
+      </ul>
+
+      <div class="nav-logo">
+     <img src="images/logo.jpeg" alt="Logo" class="logo-img">
+          <span class="logo-text">Rounak's World</span>
+      </div>
+      
+      <div class="nav-toggle" id="mobile-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+      </div>
+  </div>
+
+  <!-- Main Game World Container -->
+  <div class="game-world-container" id="game-world-container">
+      <!-- Hero Section - Central Station -->
+      <section id="home" class="game-section hero-station">
+          <div class="subway-bg">
+              <div class="train-tracks"></div>
+              <div class="moving-train"></div>
+          </div>
+
+          <div class="runner-container">
+              <div class="runner" id="runner">
+                  <div class="runner-body">
+                      <div class="runner-head"></div>
+                      <div class="runner-torso"></div>
+                      <div class="runner-legs"></div>
+                  </div>
+                  <div class="speech-bubble" id="speech-bubble">
+                      <p>Hey! I'm Rounak! Let's surf through my portfolio! 🏄‍♂️</p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="station-content">
+              <div class="station-sign">
+                  <h1>CENTRAL STATION</h1>
+                  <p>Welcome to Rounak's Developer Journey</p>
+              </div>
+
+              <div class="hero-info">
+                  <h2 class="glitch-text" data-text="ROUNAK KESHRI">ROUNAK KESHRI</h2>
+                  <p class="hero-subtitle">Full Stack Developer & Code Surfer</p>
+                  <p class="hero-description">
+                      B.Tech Electrical Engineering student who loves to surf through code,
+                      collect programming skills like coins, and build amazing web experiences!
+                  </p>
+
+                  <div class="power-ups">
+                      <div class="power-up" data-power="HTML/CSS"><i class="fab fa-html5"></i></div>
+                      <div class="power-up" data-power="JavaScript"><i class="fab fa-js"></i></div>
+                      <div class="power-up" data-power="Python"><i class="fab fa-python"></i></div>
+                      <div class="power-up" data-power="React"><i class="fab fa-react"></i></div>
+                  </div>
+
+                  <div class="action-buttons">
+                      <button class="game-btn primary" onclick="startJourney()">
+                          <i class="fas fa-play"></i>
+                          Start Journey
+                      </button>
+                      <button class="game-btn secondary" onclick="navigateToSection(4)">
+                          <i class="fas fa-message"></i>
+                          Quick Chat
+                      </button>
+                  </div>
+              </div>
+          </div>
+
+          <div class="floating-coins">
+              <div class="coin"></div>
+              <div class="coin"></div>
+              <div class="coin"></div>
+              <div class="coin"></div>
+              <div class="coin"></div>
+          </div>
+      </section>
+
+      <!-- About Section - About Plaza -->
+      <section id="about" class="game-section about-station">
+          <div class="subway-bg">
+              <div class="platform-tiles"></div>
+          </div>
+
+          <div class="station-header">
+              <h2 class="station-title">ABOUT PLAZA</h2>
+              <div class="runner-mini">
+                  <div class="speech-bubble-mini">
+                      <p>Let me tell you my story! 📖</p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="about-content">
+              <div class="about-card">
+                  <div class="card-header">
+                      <i class="fas fa-user-graduate"></i>
+                      <h3>My Journey</h3>
+                  </div>
+                  <p>
+                      I'm a passionate B.Tech Electrical Engineering student at Techno Main Salt Lake,
+                      who discovered the amazing world of coding and never looked back! Like a true subway surfer,
+                      I navigate through different programming languages and technologies.
+                  </p>
+              </div>
+
+              <div class="stats-board">
+                  <div class="stat-card" data-aos="zoom-in">
+                      <div class="stat-icon"><i class="fas fa-project-diagram"></i></div>
+                      <div class="stat-number" data-target="15">0</div>
+                      <div class="stat-label">Projects Completed</div>
+                      <div class="progress-bar"><div class="progress-fill"></div></div>
+                  </div>
+                  <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
+                      <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+                      <div class="stat-number" data-target="1323">0</div>
+                      <div class="stat-label">CodeChef Rating</div>
+                      <div class="progress-bar"><div class="progress-fill"></div></div>
+                  </div>
+                  <div class="stat-card" data-aos="zoom-in" data-aos-delay="400">
+                      <div class="stat-icon"><i class="fas fa-code"></i></div>
+                      <div class="stat-number" data-target="1190">0</div>
+                      <div class="stat-label">LeetCode Rating</div>
+                      <div class="progress-bar"><div class="progress-fill"></div></div>
+                  </div>
+              </div>
+
+              <div class="education-timeline">
+                  <div class="timeline-item" data-aos="slide-right">
+                      <div class="timeline-year">2022-2026</div>
+                      <div class="timeline-content">
+                          <h4>B.Tech Electrical Engineering</h4>
+                          <p>Techno Main Salt Lake, Kolkata</p>
+                          <span class="grade">GPA: 6.5/10.00</span>
+                      </div>
+                  </div>
+                  <div class="timeline-item" data-aos="slide-right" data-aos-delay="200">
+                      <div class="timeline-year">2021</div>
+                      <div class="timeline-content">
+                          <h4>Higher Secondary</h4>
+                          <p>Rajkamal Saraswati Vidhya Mandir</p>
+                          <span class="grade">83.2%</span>
+                      </div>
+                  </div>
+                  <div class="timeline-item" data-aos="slide-right" data-aos-delay="200">
+                      <div class="timeline-year">2019</div>
+                      <div class="timeline-content">
+                          <h4> Secondary</h4>
+                          <p>Kids garden secondary school</p>
+                          <span class="grade">84%</span>
+                      </div>
+                  </div>
+                  
+              </div>
+          </div>
+      </section>
+
+      <!-- Skills Section - Skills Junction -->
+      <section id="skills" class="game-section skills-station">
+          <div class="subway-bg">
+              <div class="electric-wires"></div>
+          </div>
+
+          <div class="station-header">
+              <h2 class="station-title">SKILLS JUNCTION</h2>
+              <div class="runner-mini">
+                  <div class="speech-bubble-mini">
+                      <p>Check out my power-ups! ⚡</p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="skills-game">
+              <div class="skill-categories">
+                  <div class="skill-category" data-aos="fade-up">
+                      <div class="category-header">
+                          <i class="fas fa-code"></i>
+                          <h3>Programming Languages</h3>
+                      </div>
+                      <div class="skill-items">
+                          <div class="skill-item">
+                              <div class="skill-info"><span class="skill-name">C++</span><span class="skill-level">Level 90</span></div>
+                              <div class="skill-bar"><div class="skill-progress" data-width="90%"></div><div class="skill-coins"><div class="mini-coin"></div><div class="mini-coin"></div><div class="mini-coin"></div></div></div>
+                          </div>
+                          <div class="skill-item">
+                              <div class="skill-info"><span class="skill-name">Python</span><span class="skill-level">Level 85</span></div>
+                              <div class="skill-bar"><div class="skill-progress" data-width="85%"></div><div class="skill-coins"><div class="mini-coin"></div><div class="mini-coin"></div><div class="mini-coin"></div></div></div>
+                          </div>
+                          <div class="skill-item">
+                              <div class="skill-info"><span class="skill-name">Java</span><span class="skill-level">Level 80</span></div>
+                              <div class="skill-bar"><div class="skill-progress" data-width="80%"></div><div class="skill-coins"><div class="mini-coin"></div><div class="mini-coin"></div></div></div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="skill-category" data-aos="fade-up" data-aos-delay="200">
+                      <div class="category-header">
+                          <i class="fas fa-globe"></i>
+                          <h3>Web Technologies</h3>
+                      </div>
+                      <div class="skill-items">
+                          <div class="skill-item">
+                              <div class="skill-info"><span class="skill-name">HTML/CSS</span><span class="skill-level">Level 95</span></div>
+                              <div class="skill-bar"><div class="skill-progress" data-width="95%"></div><div class="skill-coins"><div class="mini-coin"></div><div class="mini-coin"></div><div class="mini-coin"></div><div class="mini-coin"></div></div></div>
+                          </div>
+                          <div class="skill-item">
+                              <div class="skill-info"><span class="skill-name">JavaScript</span><span class="skill-level">Level 88</span></div>
+                              <div class="skill-bar"><div class="skill-progress" data-width="88%"></div><div class="skill-coins"><div class="mini-coin"></div><div class="mini-coin"></div><div class="mini-coin"></div></div></div>
+                          </div>
+                          <div class="skill-item">
+                              <div class="skill-info"><span class="skill-name">Django</span><span class="skill-level">Level 75</span></div>
+                              <div class="skill-bar"><div class="skill-progress" data-width="75%"></div><div class="skill-coins"><div class="mini-coin"></div><div class="mini-coin"></div></div></div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="platforms-arcade">
+                  <h3>Coding Platforms Leaderboard</h3>
+                  <div class="arcade-machines">
+                      <div class="arcade-machine" data-aos="zoom-in">
+                          <div class="machine-screen">
+                              <i class="fas fa-trophy"></i>
+                              <h4>CodeChef</h4>
+                              <div class="score">3 ⭐</div>
+                              <div class="high-score">Max: 1323</div>
+                          </div>
+                          <div class="machine-base"></div>
+                      </div>
+                      <div class="arcade-machine" data-aos="zoom-in" data-aos-delay="200">
+                          <div class="machine-screen">
+                              <i class="fas fa-star"></i>
+                              <h4>HackerRank</h4>
+                              <div class="score">5 ⭐</div>
+                              <div class="high-score">C++ & Python</div>
+                          </div>
+                          <div class="machine-base"></div>
+                      </div>
+                      <div class="arcade-machine" data-aos="zoom-in" data-aos-delay="400">
+                          <div class="machine-screen">
+                              <i class="fas fa-code"></i>
+                              <h4>LeetCode</h4>
+                              <div class="score">Active</div>
+                              <div class="high-score">Max: 1190</div>
+                          </div>
+                          <div class="machine-base"></div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- Projects Section - Project Terminal -->
+      <section id="projects" class="game-section projects-station">
+          <div class="subway-bg">
+              <div class="city-skyline"></div>
+          </div>
+
+          <div class="station-header">
+              <h2 class="station-title">PROJECT TERMINAL</h2>
+              <div class="runner-mini">
+                  <div class="speech-bubble-mini">
+                      <p>My awesome creations! 🚀</p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="projects-game">
+              <div class="project-cards">
+                  <div class="project-card" data-aos="flip-left">
+                      <div class="project-image">
+                          <img src="images/coderunner.jpeg" alt="Code Runner">
+                          <div class="project-overlay">
+                              <div class="project-buttons">
+                                  <a href="https://frontened-project.vercel.app/" target="_blank" class="project-btn">
+                                   <i class="fas fa-external-link-alt"></i>
+                                      Live Demo
+                                 </a>
+                                   <a href="https://github.com/rounakkeshri-cout/Frontened-project" target="_blank" class="project-btn">
+                                     <i class="fab fa-github"></i>
+                                        Code
+                                   </a>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="project-content">
+                          <h3>Code Runner</h3>
+                          <p>A web-based code runner for HTML, CSS, and JavaScript with live preview functionality.</p>
+                          <div class="project-tech">
+                              <span class="tech-badge">HTML</span>
+                              <span class="tech-badge">CSS</span>
+                              <span class="tech-badge">JavaScript</span>
+                          </div>
+                          <div class="project-score">
+                              <i class="fas fa-star"></i>
+                              <span>95 Points</span>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="project-card" data-aos="flip-left" data-aos-delay="200">
+                      <div class="project-image">
+                          <img src="https://via.placeholder.com/300x200/4ecdc4/ffffff?text=Food+Delivery" alt="Food Delivery">
+                          <div class="project-overlay">
+                              <div class="project-buttons">
+                                  <a href="https://chatroom-gamma-seven.vercel.app/" target="_blank" class="project-btn">
+                                   <i class="fas fa-external-link-alt"></i>
+                                      Live Demo
+                                 </a>
+                                   <a href="https://github.com/rounakkeshri-cout/Chatroom" target="_blank" class="project-btn">
+                                     <i class="fab fa-github"></i>
+                                        Code
+                                   </a>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="project-content">
+                          <h3>Food Delivery Website</h3>
+                          <p>Full-featured food delivery platform with cart management and order placement.</p>
+                          <div class="project-tech">
+                              <span class="tech-badge">HTML</span>
+                              <span class="tech-badge">CSS</span>
+                              <span class="tech-badge">JavaScript</span>
+                              <span class="tech-badge">Node.js</span>
+                          </div>
+                          <div class="project-score">
+                              <i class="fas fa-star"></i>
+                              <span>88 Points</span>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="project-card" data-aos="flip-left" data-aos-delay="400">
+                      <div class="project-image">
+                          <img src="images/chatroom.jpeg" alt="Live Chat">
+                          <div class="project-overlay">
+                              <div class="project-buttons">
+                                 <a href="https://chatroom-gamma-seven.vercel.app/" target="_blank" class="project-btn">
+                                   <i class="fas fa-external-link-alt"></i>
+                                      Live Demo
+                                 </a>
+                                   <a href="https://github.com/rounakkeshri-cout/Chatroom" target="_blank" class="project-btn">
+                                     <i class="fab fa-github"></i>
+                                        Code
+                                   </a>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="project-content">
+                          <h3>Chatroom</h3>
+                          <p>Real-time chat application with WebSocket support and clean interface.</p>
+                          <div class="project-tech">
+                              <span class="tech-badge">HTML</span>
+                              <span class="tech-badge">CSS</span>
+                              <span class="tech-badge">JavaScript</span>
+                              <span class="tech-badge">Socket.io</span>
+                          </div>
+                          <div class="project-score">
+                              <i class="fas fa-star"></i>
+                              <span>92 Points</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- Contact Section - Contact Hub -->
+      <section id="contact" class="game-section contact-station">
+          <div class="subway-bg">
+              <div class="neon-lights"></div>
+          </div>
+
+          <div class="station-header">
+              <h2 class="station-title">CONTACT HUB</h2>
+              <div class="runner-mini">
+                  <div class="speech-bubble-mini">
+                      <p>Let's connect and build something awesome! 🤝</p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="contact-game">
+              <div class="contact-info">
+                  <div class="info-card" data-aos="slide-right">
+                      <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                      <div class="info-content">
+                          <h4>Email Station</h4>
+                          <p>rounakkeshri000@gmail.com</p>
+                      </div>
+                  </div>
+                  <div class="info-card" data-aos="slide-right" data-aos-delay="200">
+                      <div class="info-icon"><i class="fas fa-phone"></i></div>
+                      <div class="info-content">
+                          <h4>Phone Terminal</h4>
+                          <p>+91 6206094364</p>
+                      </div>
+                  </div>
+                  <div class="info-card" data-aos="slide-right" data-aos-delay="400">
+                      <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                      <div class="info-content">
+                          <h4>Location Hub</h4>
+                          <p>Kolkata, West Bengal, India</p>
+                      </div>
+                  </div>
+
+                  <div class="social-arcade">
+                      <h4>Social Network Arcade</h4>
+                      <div class="social-buttons">
+                          <a href="https://www.linkedin.com/in/rounak-keshri-775a83169/" class="social-btn linkedin" target="_blank"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
+                          <a href="https://github.com/rounakkeshri-cout" class="social-btn github" target="_blank"><i class="fab fa-github"></i><span>GitHub</span></a>
+                          <a href="https://leetcode.com/u/rounakkeshri000/" class="social-btn leetcode" target="_blank"><i class="fas fa-code"></i><span>LeetCode</span></a>
+                          <a href="https://www.geeksforgeeks.org/user/rounakkeshri000/" class="social-btn gfg" target="_blank"><i class="fas fa-laptop-code"></i><span>GeeksforGeeks</span></a>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="contact-form-container" data-aos="slide-left">
+                  <h3>Send Message</h3>
+                  <form class="contact-form" id="contact-form">
+                      <div class="form-group">
+                          <input type="text" id="name" name="name" required placeholder=" ">
+                          <label for="name">Your Name</label>
+                          <div class="input-highlight"></div>
+                      </div>
+                      <div class="form-group">
+                          <input type="email" id="email" name="email" required placeholder=" ">
+                          <label for="email">Your Email</label>
+                          <div class="input-highlight"></div>
+                      </div>
+                      <div class="form-group">
+                          <textarea id="message" name="message" rows="5" required placeholder=" "></textarea>
+                          <label for="message">Your Message</label>
+                          <div class="input-highlight"></div>
+                      </div>
+                      <button type="submit" class="game-btn primary">
+                          <i class="fas fa-paper-plane"></i>
+                          Send Message
+                      </button>
+                  </form>
+              </div>
+          </div>
+      </section>
+  </div>
+
+  <!-- Horizontal Navigation Arrows -->
+  <div class="nav-arrows">
+      <button id="prev-section-btn" class="nav-arrow left"><i class="fas fa-chevron-left"></i></button>
+      <button id="next-section-btn" class="nav-arrow right"><i class="fas fa-chevron-right"></i></button>
+  </div>
+
+  <!-- Game Over / Footer -->
+  <footer class="game-footer">
+      <div class="footer-content">
+          <div class="final-score">
+              <h3>Game Complete!</h3>
+              <p>Thanks for surfing through my portfolio!</p>
+              <div class="final-stats">
+                  <span>Total Score: <span id="final-score">0</span></span>
+                  <span>Coins Collected: <span id="final-coins">0</span></span>
+              </div>
+          </div>
+          <p>&copy; 2024 Rounak Keshri. Built with passion and code! 🚀</p>
+      </div>
+  </footer>
+
+  <!-- Notification System -->
+  <div id="notification-container"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
