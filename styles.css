@@ -2153,6 +2153,11 @@ html, body {
   overflow: hidden;
   height: 100%;
   width: 100%;
+    font-family: sans-serif;
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
 #game-world-container {
@@ -2164,20 +2169,23 @@ html, body {
 
 .game-section {
   width: 100vw;
-  height: calc(100vh - 80px); /* Account for fixed nav */
+  min-height: calc(100vh - 80px);
   flex-shrink: 0;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
   scroll-behavior: smooth;
-  padding-top: 100px; /* 👈 Pushes content down so it's not hidden */
+  padding: 100px 0 40px 0; /* top padding for nav, bottom padding for visibility */
+  box-sizing: border-box;
 }
 
+.station-content
 .about-content,
 .skills-game,
 .contact-game {
   height: 100%;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 .game-section::-webkit-scrollbar {
   display: none;
