@@ -1,4 +1,5 @@
 // Game State
+
 const gameState = {
   score: 0,
   coins: 0,
@@ -42,7 +43,51 @@ function scrollToSection(id) {
 
 // Optional: you can also bind it dynamically instead of using `onclick` in HTML
 
+// Dark Mode Toggle Functionality - Emoji Only
+document.addEventListener('DOMContentLoaded', function() {
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const darkModeEmoji = document.getElementById('dark-mode-emoji');
+    const body = document.body;
 
+    // Check for saved dark mode preference
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    
+    if (isDarkMode) {
+        enableDarkMode();
+    }
+
+    darkModeToggle.addEventListener('click', function() {
+        if (body.classList.contains('dark-mode')) {
+            disableDarkMode();
+        } else {
+            enableDarkMode();
+        }
+    });
+
+    function enableDarkMode() {
+        body.classList.add('dark-mode');
+        darkModeEmoji.textContent = '☀️';
+        localStorage.setItem('darkMode', 'true');
+        
+        // Add smooth transition
+        body.style.transition = 'all 0.3s ease';
+        setTimeout(() => {
+            body.style.transition = '';
+        }, 300);
+    }
+
+    function disableDarkMode() {
+        body.classList.remove('dark-mode');
+        darkModeEmoji.textContent = '🌙';
+        localStorage.setItem('darkMode', 'false');
+        
+        // Add smooth transition
+        body.style.transition = 'all 0.3s ease';
+        setTimeout(() => {
+            body.style.transition = '';
+        }, 300);
+    }
+});
 
 // Initialize Game
 function initializeGame() {
@@ -747,3 +792,4 @@ console.log("📱 Responsive design ready")
 console.log("🚇 Welcome to Rounak's Subway Surfers Portfolio! 🚇")
 console.log("🎮 Collect coins, earn points, and explore my journey!")
 console.log("🏃‍♂️ Let the adventure begin!")
+
